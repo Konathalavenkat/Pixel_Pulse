@@ -8,10 +8,27 @@ const SignUpValidator = [
     .notEmpty()
     .withMessage("Email is required"),
   check("password")
-  .notEmpty()
-  .withMessage("Password must be at least 6 characters")
-  .isLength({ min: 6 })
-  .withMessage("Password must be at least 6 characters"),
+    .notEmpty()
+    .withMessage("Password must be at least 6 characters")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters"),
 ];
 
-module.exports = SignUpValidator;
+const SignInValidator = [
+  check("email")
+    .isEmail()
+    .withMessage("Invalid Email")
+    .notEmpty()
+    .withMessage("Email is required"),
+  check("password").notEmpty().withMessage("Password is required"),
+];
+
+const SendVerifyValidator = [
+  check("email")
+    .isEmail()
+    .withMessage("Invalid Email")
+    .notEmpty()
+    .withMessage("Email is required"),
+];
+
+module.exports = { SignUpValidator, SignInValidator,SendVerifyValidator };
