@@ -4,6 +4,7 @@ const hashPassword = require('../utils/hashPassword');
 const comparePassword = require('../utils/comparePassword');
 const generateToken = require('../utils/generateToken');
 const generateCode = require('../utils/generateCode');
+const sendEmail = require('../utils/sendEmail');
 
 const signup = async (req,res,next) => {
  try{
@@ -54,11 +55,19 @@ const getVerificationCode = async (req,res,next) => {
     throw new Error("User not found");
   }
   const verificationCode = generateCode(6);
-
+  if(extuser.isVerified) {
+    res.code=400;
+    throw new Error("User is already verified");
+  }
   extuser.verificationCode=verificationCode;
   await extuser.save();
   //email verification code
-
+  await sendEmail({
+    emailTo : email,
+    subject : "Email Verification Code",
+    code: verificationCode,
+    content: "Verify your account"
+  });
   //Send email verification code to user
   res.status(200).json({code:200, status:true, message: "Verification code sent successfully"});
 }
