@@ -148,4 +148,60 @@ const RecoverPassword = async (req,res,next) => {
   }
 }
 
-module.exports = {signup,signin,getVerificationCode,verifyEmail,sendForgotPasswordCode,RecoverPassword};
+const ChangePassword = async (req,res,next) => {
+  try{
+    const {oldPassword,newPassword} = req.body;
+    const {_id} = req.user;
+    const User = await user.findById(_id);
+    if(!User){
+      res.code=404;
+      throw new Error("User not found");
+    }
+    const match = await comparePassword(oldPassword,User.password);
+    if(!match){
+      res.code=400;
+      throw new Error("Invalid old password");
+    }
+    if(oldPassword === newPassword) {
+      res.code=400;
+      throw new Error("New password should not be same as old password");
+    }
+    const hashedPassword = await hashPassword(newPassword);
+    User.password = hashedPassword;
+    await User.save();
+    res.status(200).json({code:200, status:true, message: "Password changed successfully"});
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+const updateProfile = async (req,res,next) => {
+  try{
+    const {name,email} = req.body;
+    const {_id} = req.user;
+    const User = await user.findById(_id).select("-password -verificationCode -forgotPasswordCode");
+    if(!User){
+      res.code=404;
+      throw new Error("User not found");
+    }
+    
+    User.email = email ? email : User.email;
+    User.name = name ? name : User.name;
+    if(email){
+      const isExistUser = await user.findOne({email:email});
+      if(isExistUser && isExistUser.email === email){
+        res.code=400;
+        throw new Error("Email already exists");
+      }
+    }
+    await User.save();
+    res.status(200).json({code:200, status:true, message: "Profile updated successfully", user: User});
+
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+module.exports = {signup,signin,getVerificationCode,verifyEmail,sendForgotPasswordCode,RecoverPassword,ChangePassword,updateProfile};
