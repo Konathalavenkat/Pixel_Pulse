@@ -6,6 +6,7 @@ const UserSchema = mongoose.Schema({
     password: {type: String, required: true,minlength: 6},
     role : {type: Number, required: true,default : 3},
     verificationCode: {type: String},
+    forgotPasswordCode : {type: String},
     isVerified: {type: Boolean, default: false}
 },{timestamps: true});
 
