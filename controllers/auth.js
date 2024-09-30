@@ -194,7 +194,9 @@ const updateProfile = async (req,res,next) => {
         res.code=400;
         throw new Error("Email already exists");
       }
+      User.isVerified = false;
     }
+    
     await User.save();
     res.status(200).json({code:200, status:true, message: "Profile updated successfully", user: User});
 

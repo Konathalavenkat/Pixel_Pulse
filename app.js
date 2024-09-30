@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 dotenv.config();
-const {authRouter }= require('./routes')
+const {authRouter,categoryRouter }= require('./routes')
 const {errorHandler} = require('./middlewares');
 
 const {notfound} = require('./controllers');
@@ -20,7 +20,7 @@ app.use(morgan("dev"))
 
 //routes
 app.use('/api/v1/auth',authRouter);
-
+app.use('/api/v1/category',categoryRouter);
 //not found 
 app.use('*',notfound);
 

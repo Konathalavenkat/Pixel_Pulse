@@ -1,3 +1,3 @@
 const user= require('./UserModel')
-
-module.exports = {user}; 
+const category= require('./category')
+module.exports = {user,category}; 
