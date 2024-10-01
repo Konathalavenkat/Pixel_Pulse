@@ -28,4 +28,63 @@ const addCategory = async (req,res,next) => {
     }
 }
 
-module.exports = {addCategory}
+const updateCategory = async (req,res,next) => {
+    try{
+        const {id} = req.params;
+        const {_id} = req.user;
+        const {name,description} = req.body;
+        const Category = await category.findById(id);
+        if(!Category) {
+            res.code=404;
+            throw new Error("Category not found");
+        }
+        const categorywithtitle = await category.findOne({name});
+        if(categorywithtitle && categorywithtitle.name == name){
+            res.code=400;
+            throw new Error(`Category with title ${name} already exists`);
+        }
+        Category.name = name ? name : category.name;
+        Category.description = description? description : category.description;
+        Category.updatedBy = _id;
+        await Category.save();
+        res.status(200).json({code:200,status:true,message: "Category updated successfully",category:Category});
+    }
+    catch(e){
+        next(e);
+    }
+}
+
+const deleteCategory = async (req,res,next) => {
+    try{
+        const {id} = req.params;
+        const Category = await category.findById(id);
+        if(!Category){
+            res.code=404;
+            throw new Error("Category not found");
+        }
+        await category.findByIdAndDelete(id);
+        res.status(200).json({code:200,status:true,message: "Category deleted successfully"});
+    }catch(e){
+        next(e);
+    }
+}
+
+const getCategory = async (req,res,next) => {
+    try{
+        const {q}= req.query;
+        let query={};
+        if(q){
+            const search = RegExp(q, 'i');
+            query.$or=[
+                {name: search},{description: search}
+            ]
+        }
+        const categories = await category.find(query);
+        res.status(200).json({code:200,status:true,message: "Categories retrieved successfully", data:{categories}});
+    }
+    catch(e){
+        next(e);
+    }
+}
+
+module.exports = {addCategory,updateCategory,deleteCategory,getCategory}
