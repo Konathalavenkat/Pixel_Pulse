@@ -69,9 +69,9 @@ const deleteCategory = async (req,res,next) => {
     }
 }
 
-const getCategory = async (req,res,next) => {
+const getCategories = async (req,res,next) => {
     try{
-        const {q}= req.query;
+        var {q,size,page}= req.query;
         let query={};
         if(q){
             const search = RegExp(q, 'i');
@@ -79,12 +79,31 @@ const getCategory = async (req,res,next) => {
                 {name: search},{description: search}
             ]
         }
-        const categories = await category.find(query);
-        res.status(200).json({code:200,status:true,message: "Categories retrieved successfully", data:{categories}});
+        size=parseInt(size) || 10;
+        page=parseInt(page) || 1;
+        const count = await category.countDocuments(query);
+        const totalPages = Math.ceil(count / size);
+        const startIndex = (page - 1) * size;
+        const categories = await category.find(query).skip(startIndex).limit(size);
+        res.status(200).json({code:200,status:true,message: "Categories retrieved successfully", data:{categories},totalPages:totalPages,pagenumber:page});
+    }
+    catch(e){
+        next(e);
+    }
+}
+const getCategory = async (req,res,next) => {
+    try{
+        const {id} = req.params;
+        const Category = await category.findById(id);
+        if(!Category){
+            res.code=404;
+            throw new Error("Category not found");
+        }
+        res.status(200).json({code:200,status:true,message: "Category retrived successfully",data:Category})
     }
     catch(e){
         next(e);
     }
 }
 
-module.exports = {addCategory,updateCategory,deleteCategory,getCategory}
+module.exports = {addCategory,updateCategory,deleteCategory,getCategory,getCategories}

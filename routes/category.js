@@ -33,9 +33,13 @@ router.delete(
   categoryController.deleteCategory
 );
 
+router.get("/", isAuth, categoryController.getCategories);
+
 router.get(
-  "/get-category",
+  "/:id",
   isAuth,
+  idValidator,
+  validate,
   categoryController.getCategory
 );
 
