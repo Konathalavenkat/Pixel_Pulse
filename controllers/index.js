@@ -1,5 +1,5 @@
 const authController = require('./auth');
 const notfound = require('./notfound');
 const categoryController = require('./category');
-
-module.exports = {authController,notfound,categoryController};
+const fileController = require('./file');
+module.exports = {authController,notfound,categoryController,fileController};

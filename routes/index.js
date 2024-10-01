@@ -1,3 +1,4 @@
 const authRouter = require('./auth')
 const categoryRouter = require('./category');
-module.exports = {authRouter,categoryRouter};
+const fileRouter = require('./file');
+module.exports = {authRouter,categoryRouter,fileRouter};
