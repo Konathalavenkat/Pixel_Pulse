@@ -21,4 +21,6 @@ router.put('/change-password',changePasswordValidator,validate, isAuth,authContr
 
 router.put('/update-profile', isAuth, updateProfileValidator,validate, authController.updateProfile)
 
+router.get('/get-current-user', isAuth, authController.getCurrentUser);
+
 module.exports = router;

@@ -6,4 +6,5 @@ const validateExtension = (ext) => {
     }
   };
   
+  
   module.exports = { validateExtension };

@@ -1,5 +1,6 @@
 const { check } = require("express-validator");
 const validateEmail = require("./validateEmail");
+const { default: mongoose } = require("mongoose");
 
 const SignUpValidator = [
   check("name").notEmpty().withMessage("Name is required"),
@@ -73,6 +74,7 @@ const changePasswordValidator = [
 ]
 
 const updateProfileValidator = [
+
   check("email").custom(async (email) => {
     if (email) {
       const isValidEmail = validateEmail(email);
@@ -81,6 +83,13 @@ const updateProfileValidator = [
       }
     }
   }),
+
+  check("profilePic").custom(async (profilePic)=>{
+    if(profilePic) 
+      if(!mongoose.Types.ObjectId.isValid(profilePic)){
+        throw new Error("Invalid profile pic"); 
+      }
+  })
 ]
 
 module.exports = {

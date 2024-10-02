@@ -7,7 +7,8 @@ const UserSchema = mongoose.Schema({
     role : {type: Number, required: true,default : 3},
     verificationCode: {type: String},
     forgotPasswordCode : {type: String},
-    isVerified: {type: Boolean, default: false}
+    isVerified: {type: Boolean, default: false},
+    profilePic: {type: mongoose.Types.ObjectId,ref:"file"}
 },{timestamps: true});
 
 module.exports = mongoose.model('user', UserSchema);

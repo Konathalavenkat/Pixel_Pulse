@@ -69,7 +69,7 @@ const deleteFile = async (req, res, next) => {
   try {
     const { key } = req.query;
 
-    await deleteFileFromS3(key);
+    await deleteFileFromDrive(key);
     await File.findOneAndDelete({ key });
 
     res
