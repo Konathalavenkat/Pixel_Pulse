@@ -7,8 +7,13 @@ const upload = require("../middlewares/upload");
 router.post(
   "/upload",
   isAuth,
-  upload.array("image",3), //upload.single("image") if we want to upload only one file
+  upload.single("image"), //upload.array("image",3) if we want to upload multiple files
   fileController.uploadFile
 );
 
+router.get("/signed-url", isAuth, fileController.getSignedUrl);
+
+router.delete("/delete-file", isAuth, fileController.deleteFile);
+
 module.exports = router;
+
