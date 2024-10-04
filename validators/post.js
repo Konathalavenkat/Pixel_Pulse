@@ -1,4 +1,4 @@
-const { check } = require("express-validator");
+const { check,param } = require("express-validator");
 const { default: mongoose } = require("mongoose");
 
 const addPostValidator = [
@@ -20,4 +20,29 @@ const addPostValidator = [
   }),
 ];
 
-module.exports = { addPostValidator };
+const updatePostValidator = [
+  check("category")
+    .custom(async(category) =>{ 
+      if(category)
+        if (!mongoose.Types.ObjectId.isValid(category)) {
+          throw new Error("Invalid category");
+        }
+    }),
+  check("file").custom(async (file) => {
+    if (file) {
+      if (!mongoose.Types.ObjectId.isValid(file)) {
+        throw new Error("Invalid file");
+      }
+    }
+  }),
+]
+
+const IdValidator =[
+  param("id").custom(async (id) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid Post id");
+    }
+  }),
+] 
+
+module.exports = { addPostValidator,updatePostValidator,IdValidator };
