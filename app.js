@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 dotenv.config();
+
 const {authRouter,categoryRouter,fileRouter,postRouter }= require('./routes')
 const {errorHandler} = require('./middlewares');
 
@@ -23,6 +24,7 @@ app.use('/api/v1/auth',authRouter);
 app.use('/api/v1/category',categoryRouter);
 app.use('/api/v1/file',fileRouter);
 app.use('/api/v1/post', postRouter);
+
 //not found 
 app.use('*',notfound);
 

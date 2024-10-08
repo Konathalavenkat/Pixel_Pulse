@@ -1,5 +1,5 @@
 const { check,param } = require("express-validator");
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const addPostValidator = [
   check("title").notEmpty().withMessage("Title is required"),

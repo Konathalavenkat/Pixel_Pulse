@@ -5,11 +5,13 @@ const validate = (req,res,next)=>{
     if(Object.keys(errors.errors).length === 0){ 
         next();
     }
-    else{const mappedErrors = {};
-    errors.errors.map((error)=>{
-        mappedErrors[error.path] = error.msg;
-    })
-    res.status(400).json(mappedErrors);}
+    else{
+        const mappedErrors = {};
+        errors.errors.map((error)=>{
+            mappedErrors[error.path] = error.msg;
+        })
+        res.status(400).json(mappedErrors);
+    }
 }
 
 module.exports = validate;
