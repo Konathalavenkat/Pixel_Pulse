@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors= require('cors')
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 dotenv.config();
@@ -15,6 +16,7 @@ const ConnectMongoDb = require('./init/mongodb');
 const app = express();
 ConnectMongoDb();
 
+app.use(cors({origin: '*'}))
 app.use(express.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({ limit: "500mb",extended: true }));
 app.use(morgan("dev"))
