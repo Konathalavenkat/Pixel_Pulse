@@ -9,20 +9,15 @@ const { Readable } = require('stream');
 const Oauth2 = new google.auth.OAuth2(
     googleClientId,googleClientSecret,redirectUrl
 )
+
 Oauth2.setCredentials({refresh_token:refreshToken});
 
 const drive = google.drive({ version: 'v3', auth: Oauth2 });
 
-/**
- * Upload a file to Google Drive
- * @param {Object} file - The file object containing buffer and mimetype.
- * @param {String} ext - The file extension.
- * @returns {String} File ID on Google Drive
- */
 const bufferToStream = async (buffer) => {
   const readable = new Readable();
   readable.push(buffer);
-  readable.push(null); // Signal the end of the stream
+  readable.push(null); 
   return readable;
 };
 

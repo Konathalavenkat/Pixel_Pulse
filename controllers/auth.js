@@ -50,7 +50,7 @@ const signin = async (req, res, next) => {
         code: 200,
         status: true,
         message: "User signed in successfully",
-        token: token,
+        data:{token: token},
       });
   } catch (e) {
     next(e);
@@ -232,7 +232,7 @@ const updateProfile = async (req, res, next) => {
     }
     User.email = email ? email : User.email;
     User.name = name ? name : User.name;
-    if (email) {
+    if (email && email!==req.user.email) {
       const isExistUser = await user.findOne({ email: email });
       if (isExistUser && isExistUser.email === email) {
         res.code = 400;

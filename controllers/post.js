@@ -24,6 +24,7 @@ const addPost = async (req, res, next) => {
     }
     const newPost = new Post({
       title,
+      file,
       content,
       category: Category,
       author: _id,

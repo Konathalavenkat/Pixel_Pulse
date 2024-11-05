@@ -85,7 +85,7 @@ const getCategories = async (req,res,next) => {
         const totalPages = Math.ceil(count / size);
         const startIndex = (page - 1) * size;
         const categories = await category.find(query).skip(startIndex).limit(size);
-        res.status(200).json({code:200,status:true,message: "Categories retrieved successfully", data:{categories},totalPages:totalPages,pagenumber:page});
+        res.status(200).json({code:200,status:true,message: "Categories retrieved successfully", data:{categories,totalPages:totalPages,pagenumber:page}});
     }
     catch(e){
         next(e);
